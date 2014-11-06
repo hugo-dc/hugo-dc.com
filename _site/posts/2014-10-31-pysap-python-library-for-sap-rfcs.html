@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>@hugo_dc Blog - Pysap Python Library for SAP RFCs</title>
+        <link rel="stylesheet" type="text/css" href="../css/default.css" />
+    </head>
+    <body>
+        <div id="header">
+            <div id="logo">
+                <a href="../">@hugo_dc Blog</a>
+            </div>
+            <div id="navigation">
+                <a href="../">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../archive.html">Archive</a>
+            </div>
+        </div>
+
+        <div id="content">
+            <h1>Pysap Python Library for SAP RFCs</h1>
+
+            <div class="info">
+    Posted on October 31, 2014
+    
+</div>
+
+<p>Pysap is a python module created to call SAP RFCs, it was created by Klavdij Voncina.</p>
+<p>You can download this Python module from <a href="http://pysaprfc.sourceforge.net/#download">SourceForge</a>.</p>
+<p>This is an example of the use of this python module:</p>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="co"># This example shows how to perform remote function calls</span>
+
+<span class="ch">import</span> pysap
+
+<span class="co"># Set configuration file (contains server, mandant, user, password, etc)</span>
+sap_conn = pysap.Rfc_connection(conn_file=<span class="st">'sapconn.ini'</span>)
+
+<span class="co"># Open connection</span>
+sap_conn.<span class="dt">open</span>()
+
+<span class="co"># Get RFC definition</span>
+func = sap_conn.get_interface(<span class="st">'RFC_GET_TABLE_ENTRIES'</span>)
+
+<span class="co"># Print its description</span>
+<span class="dt">print</span> func.desc
+
+<span class="co"># Fill the needed arguments</span>
+func[<span class="st">'TABLE_NAME'</span>] = <span class="st">'KNA1'</span>
+func[<span class="st">'MAX_ENTRIES'</span>] = <span class="dv">10</span>
+
+<span class="co"># Perform function calls</span>
+<span class="kw">try</span>:
+  rc = func(<span class="st">'TABLE_NAME'</span>, <span class="st">'MAX_ENTRIES'</span>, <span class="st">'ENTRIES'</span>) <span class="co"># Only the arguments specified here will be passed to the RFC, </span>
+							  <span class="co"># for example, if you omit MAX_ENTRIES, the RFC will return ALL the entries</span>
+							  <span class="co"># Also you have to define the returning fields, in this case the table ENTRIES</span>
+<span class="kw">except</span> pysap.SapRfcError, desc:
+	<span class="dt">print</span> <span class="st">'Error invoking: </span><span class="ot">%s</span><span class="st">'</span> % desc
+
+itab = sap_conn.get_table(<span class="st">'KNA1'</span>)
+
+itab.append_from_table(func[<span class="st">'ENTRIES'</span>])
+
+<span class="dt">print</span> <span class="st">'_'</span>*<span class="dv">79</span>
+<span class="kw">for</span> row in itab:
+	<span class="dt">print</span> <span class="st">'</span><span class="ot">%(KUNNR)5s</span><span class="st"> </span><span class="ot">%(NAME1)-30s</span><span class="st">'</span> % row       </code></pre>
+<p>This python script open a SAP connection, gets the RFC definition and print it on the screen, then fill the parameters and call the RFC, later we define an internal table based on standard table KNA1 to store the RFCs result, then we print each row of the internal table.</p>
+<p>For the connection we needed a file called <code>sapconn.ini</code>, this file contains the following lines:</p>
+<pre class="sourceCode ini"><code class="sourceCode ini"><span class="co">; This is sample .ini files containing connection definitons.</span>
+<span class="co">; Modify values to suit your needs.</span>
+<span class="co">; Any connection parameter recognized by SAP connection string may be used as key</span>
+
+<span class="co">; To connect to system defined as 'Connection 1' use:</span>
+<span class="co">; conn=pysap.Rfc_connection(conn_file='/path/to/this/file',conn_name='Connection 1')</span>
+<span class="co">; conn.open()</span>
+
+<span class="kw">[DEFAULT]</span>
+<span class="co">;Default values shared by all connections</span>
+<span class="co">;(unless explicitily overriden)</span>
+<span class="dt">LCHECK</span><span class="ot">=</span><span class="dv">1</span>
+
+<span class="kw">[Connection 1]</span>
+<span class="co">; direct connection</span>
+<span class="dt">ASHOST</span><span class="ot">=</span><span class="fl">192.168.1.16</span>
+<span class="dt">CLIENT</span><span class="ot">=</span><span class="dv">260</span>
+<span class="dt">SYSNR</span><span class="ot">=</span><span class="dv">00</span>
+<span class="dt">USER</span><span class="ot">=</span><span class="st">HCRUZ</span>
+<span class="dt">PASSWD</span><span class="ot">=</span><span class="st">EASYPASS</span></code></pre>
+<p>This is the result:</p>
+<div class="figure">
+<img src="../images/pysap.png" alt="python pysap" /><p class="caption">python pysap</p>
+</div>
+<p>I’ve created very fun things using this library, but that is for another post.</p>
+
+        </div>
+        <div id="footer">
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>@hugo_dc Blog - Useful string functions in ABAP</title>
+        <link rel="stylesheet" type="text/css" href="../css/default.css" />
+    </head>
+    <body>
+        <div id="header">
+            <div id="logo">
+                <a href="../">@hugo_dc Blog</a>
+            </div>
+            <div id="navigation">
+                <a href="../">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../archive.html">Archive</a>
+            </div>
+        </div>
+
+        <div id="content">
+            <h1>Useful string functions in ABAP</h1>
+
+            <div class="info">
+    Posted on June  4, 2013
+    
+</div>
+
+<h2 id="replace">Replace</h2>
+<p>You can remove a character from a string using the sentence REPLACE, you just need to replace the character for an empty character. Here is an example: ABAP</p>
+<pre class="sourceCode abap"><code class="sourceCode abap">    <span class="kw">REPORT</span> zreplace.
+ 
+    <span class="kw">PARAMETERS</span>:
+        p_data <span class="kw">TYPE</span> c LENGTH 20.
+ 
+    REPLACE <span class="kw">ALL</span> OCCURRENCES <span class="kw">OF</span> '|' <span class="kw">IN</span> p_data <span class="kw">WITH</span> ''.
+ 
+    <span class="kw">WRITE</span>:/ p_data.</code></pre>
+<p>This program asks for an input parameter, and will replace every ‘|’ character for an empty character as you can see in the following images:</p>
+<div class="figure">
+<img src="../images/replace.png" alt="replace" /><p class="caption">replace</p>
+</div>
+<p>All the occurrences of the <code>|</code> character will be replaced by an empty character.</p>
+<h2 id="translate">Translate</h2>
+<p>You can use the sentence TRANSLATE to convert a string to uppercase or lowercase.</p>
+<pre class="sourceCode abap"><code class="sourceCode abap"><span class="kw">REPORT</span> ztranslate.
+ 
+<span class="kw">DATA</span>:
+      my_string <span class="kw">TYPE</span> string <span class="kw">VALUE</span> 'Hello world'.
+ 
+<span class="kw">WRITE</span>:/ my_string.
+ 
+TRANSLATE my_string <span class="kw">TO</span> UPPER <span class="kw">CASE</span>.
+<span class="kw">WRITE</span>:/ my_string.
+ 
+TRANSLATE my_string <span class="kw">TO</span> LOWER <span class="kw">CASE</span>.
+<span class="kw">WRITE</span>:/ my_string.</code></pre>
+<p>If you execute that program you sould get the following result:</p>
+<div class="figure">
+<img src="../images/translate.png" alt="translate" /><p class="caption">translate</p>
+</div>
+<p>There is another way you can use the sentence TRANSLATE. You can replace a character by another:</p>
+<pre class="sourceCode abap"><code class="sourceCode abap"><span class="kw">REPORT</span> ztranslate_pattern.
+ 
+<span class="kw">DATA</span>:
+      my_string <span class="kw">TYPE</span> string <span class="kw">VALUE</span> 'Hello world'.
+ 
+TRANSLATE my_string <span class="kw">USING</span> 'oaeo'.
+ 
+<span class="kw">WRITE</span>:/ my_string.</code></pre>
+<p>And the result is:</p>
+<div class="figure">
+<img src="../images/translate_pattern.png" alt="Translate pattern" /><p class="caption">Translate pattern</p>
+</div>
+<p>The sentence TRANSLATE changed the value of <code>my_string</code> based on a pattern, to understand how that pattern work is very simple, the first character is replaced by the second, the third is replaced by the fourth and so on.</p>
+<h2 id="reverse-string">Reverse string</h2>
+<p>You can reverse the content of a variable type C with fixed length using the Function Module <code>STRING_REVERSE</code>. You can use that FM as in the following example:</p>
+<pre class="sourceCode abap"><code class="sourceCode abap"><span class="kw">REPORT</span> zreverse.
+ 
+<span class="kw">DATA</span>:
+      my_var <span class="kw">TYPE</span> c LENGTH 100.
+ 
+START-<span class="kw">OF</span>-<span class="kw">SELECTION</span>.
+ 
+  my_var = 'hello world'.
+ 
+  <span class="kw">CALL</span> <span class="kw">FUNCTION</span> 'STRING_REVERSE'
+    <span class="kw">EXPORTING</span>
+      string    = my_var
+      lang      = sy-langu
+    <span class="kw">IMPORTING</span>
+      rstring   = my_var
+    <span class="kw">EXCEPTIONS</span>
+      too_small = 1
+      <span class="kw">OTHERS</span>    = 2.
+ 
+  <span class="kw">IF</span> sy-subrc = 0.
+    <span class="kw">WRITE</span>:/ my_var.
+  <span class="kw">ENDIF</span>.</code></pre>
+<p>You must be very careful with this FM, because will not work if you use it with a variable type STRING, if you use it with a variable type STRING you will receive a short dump <code>OBJECT_NOT_CHAR</code>.</p>
+<h2 id="scape-single-quote-in-string-variable">Scape single quote in string variable</h2>
+<p>There are two ways you can scape the single quote character inside of a string definition.</p>
+<pre class="sourceCode abap"><code class="sourceCode abap"><span class="kw">REPORT</span> zquote.
+ 
+<span class="kw">DATA</span>:
+      my_var <span class="kw">TYPE</span> string.
+ 
+my_var = `SELECT <span class="co">* FROM ZTEST WHERE A = '5'.`.</span>
+ 
+<span class="kw">WRITE</span>:/ my_var.
+ 
+my_var = 'SELECT <span class="co">* FROM ZTEST WHERE A = ''5''.'.</span>
+ 
+<span class="kw">WRITE</span>:/ my_var.</code></pre>
+<p>In the first definition we are using a more readable way to assign a value to a string, instead of using single quotes to start the definition we use backquote. In the second definition we are using double single quote character to represent a single quote character inside the string definition.</p>
+
+        </div>
+        <div id="footer">
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </div>
+    </body>
+</html>
