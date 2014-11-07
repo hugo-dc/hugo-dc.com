@@ -2,5 +2,14 @@
 title: Contact
 ---
 
-I live in a small hut in the mountains of Kumano Kodō on Kii Hantō and would not
-like to be contacted.
+I live in Guadalajara, Mexico, currently working as ABAP Developer for an
+International Company.  
+
+You can contact me on twitter: [hugo_dc](http://twitter.com/hugo_dc) 
+
+Write an email to: [jhugodc@gmail.com](mailto://jhugodc@gmail.com)
+
+Watch my code at Github: [hugo-dc](http://github.com/hugo-dc)
+
+
+

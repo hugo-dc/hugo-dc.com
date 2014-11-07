@@ -1,36 +1,57 @@
 body {
     color: black;
+    font-family: "Lora",  serif;
     font-size: 16px;
     margin: 0px auto 0px auto;
     width: 600px;
 }
 
 div#header {
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid #ddd;
     margin-bottom: 30px;
     padding: 12px 0px 12px 0px;
 }
+
 
 div#logo a {
     color: black;
     float: left;
     font-size: 18px;
-    font-weight: bold;
     text-decoration: none;
+}
+
+div#logo a:hover {
+    color: #00a5dc;
+    text-decoration: underline;
 }
 
 div#header #navigation {
     text-align: right;
 }
 
-div#header #navigation a {
-    color: black;
-    font-size: 18px;
-    font-weight: bold;
-    margin-left: 12px;
+div#header {
+    color: #222;
+    font-size: 14px;
+    margin-left: 18px;
     text-decoration: none;
-    text-transform: uppercase;
+    text-transform: lowercase;
+    font-family: "Lora",  serif;
+} 
+
+div#navigation a {
+    color: #222;
+    font-size: 16px;
+    margin-left: 18px;
+    text-decoration: none;
+    text-transform: lowercase;
+    font-family: "Lora",  serif;
 }
+
+div#navigation a:hover {
+    color: #00a5dc;
+    text-decoration: underline;
+}
+
 
 div#footer {
     border-top: solid 2px black;
