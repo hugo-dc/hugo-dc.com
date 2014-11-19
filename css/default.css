@@ -1,5 +1,7 @@
 body {
-    color: black;
+//    color: white;
+    color: #333;
+//    background-color: #1C1B1A;
     font-family: "Lora",  serif;
     font-size: 16px;
     margin: 0px auto 0px auto;
@@ -7,21 +9,21 @@ body {
 }
 
 div#header {
-    border-bottom: 2px solid #ddd;
+    border-bottom: 1px solid #6E6963;
+//    border-style: dotted;
     margin-bottom: 30px;
     padding: 12px 0px 12px 0px;
 }
 
 
 div#logo a {
-    color: black;
+    color: #FF2C4B;
     float: left;
     font-size: 18px;
     text-decoration: none;
 }
 
 div#logo a:hover {
-    color: #00a5dc;
     text-decoration: underline;
 }
 
@@ -39,7 +41,7 @@ div#header {
 } 
 
 div#navigation a {
-    color: #222;
+    color: #FF2C4B;
     font-size: 16px;
     margin-left: 18px;
     text-decoration: none;
@@ -48,18 +50,26 @@ div#navigation a {
 }
 
 div#navigation a:hover {
-    color: #00a5dc;
     text-decoration: underline;
 }
 
 
 div#footer {
-    border-top: solid 2px black;
+    border-top: 1px solid #6E6963;
     color: #555;
     font-size: 12px;
     margin-top: 30px;
     padding: 12px 0px 12px 0px;
     text-align: right;
+    font-style: italic;
+}
+
+div#content a {
+    color: #FF2C4B;
+}
+
+div#footer a {
+    color: #FF2C4B;
 }
 
 h1 {
@@ -74,6 +84,10 @@ div.info {
     color: #555;
     font-size: 14px;
     font-style: italic;
+}
+
+code {
+    color: #000;
 }
 
 pre.sourceCode {
