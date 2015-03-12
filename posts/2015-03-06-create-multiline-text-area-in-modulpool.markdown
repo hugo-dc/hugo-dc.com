@@ -32,7 +32,6 @@ PROCESS BEFORE OUTPUT.
 ![](/images/cc_03.jpg)
 
 * Click on Yes, now you have to select where you want to create the new module,
-
   in my case I'm going to select my Main program:
 
 ![](/images/cc_04.jpg)
@@ -113,5 +112,31 @@ CREATE OBJECT V_TEXT
 ![](/images/cc_06.jpg)
 
 
+This class contains many methods, which can be called using the object we just
+created, we call a class method using the following syntaxis:
 
+```abap
+CALL METHOD object->method.
+```
 
+Here are some methods that can be used:
+
+```abap
+set_toolbar_mode   " You can remove the toolbar
+set_statusbar_mode " You can remove statusbar
+set_readonly_mode  " This method have a parameter readonly_mode, if we set
+                   " the number 1 to that parameter, then the textbox will be
+                   " read-only 
+```
+
+Examples:
+
+```abap
+CALL METHOD text-> set_toolbar_mode.
+CALL METHOD text-> set_statusbar_mode.
+
+CALL METHOD text->set_readonly_mode
+    EXPORTING
+        readonly_mode = '1'.
+
+```
