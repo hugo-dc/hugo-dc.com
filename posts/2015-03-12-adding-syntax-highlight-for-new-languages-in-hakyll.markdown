@@ -39,14 +39,18 @@ including a library called `highlighting-kate`.
 This library handles the syntax highglight of many different programming
 languages. 
 
-We can see the source code of library `highlighting-kate` this way:
+We can see the source code of library `highlighting-kate` this way, run:
 
-run: `pandoc --version`
+```
+pandoc --version
+```
 
 This will show you the version of `highlighting-kate` that was used to compile
-`pandoc`.
+`pandoc`. Rund command:
 
-run: `cabal unpack highlighting-kate-0.5.11.1` 
+```
+cabal unpack highlighting-kate-0.5.11.1 
+```
 
 This will create a new directory containing the source code.
 
@@ -54,15 +58,19 @@ In order to allow Hakyll to detect the ABAP syntax
 correctly I have to rebuild the `highlighting-kate` library, but this time
 including the `xml` file that corresponds to ABAP.
 
-I found the `abap.xml` file in this repository: [https://github.com/PonyEdit/PonyEdit/blob/master/syntaxdefs/abap.xml](https://github.com/PonyEdit/PonyEdit/blob/master/syntaxdefs/abap.xml).
+I found the `abap.xml` file in a [GitHub repository](https://github.com/PonyEdit/PonyEdit/blob/master/syntaxdefs/abap.xml).
 
 Saved the `abap.xml` file into `highlighting-kate-0.5.11.1/xml/abap.xml`.
 
 This `abap.xml` will be used to generate a Parser for this language.
 
-To generate  the parser run:
+To generate  the parsers run:
 
-`runghc ParseSyntaxFiles xml`
+```
+runhaskell ParseSyntaxFiles xml
+```
+
+This will generate a Haskell source code for every program in the `xml` directory.
 
 And installed the library again, in the highlighting-kate repository
 I executed:
@@ -74,9 +82,23 @@ In order, the following will be installed:
 highlighting-kate-0.5.9 (latest: 0.5.11.1) (reinstall) changes:
 blaze-html-0.7.0.3 -> 0.7.1.0, filepath-1.3.0.2 added, parsec-3.1.5 -> 3.1.8
 Warning: Note that reinstalls are always dangerous. Continuing anyway...
-Configuring highlighting-kate-0.5.9...
-Building highlighting-kate-0.5.9...
-Installed highlighting-kate-0.5.9
+Configuring highlighting-kate-0.5.11.1...
+Building highlighting-kate-0.5.11.1...
+Installed highlighting-kate-0.5.11.1
 ```
 
 This command will reinstall the library.
+
+Now, you have to recompile your `site.hs` source code, to generate a new
+executable that uses our new compiled library. Then you can build your blog
+again running command: `site rebuild`.
+
+Now the source code for your new programming language should be highlighted correctly:
+
+```abap
+PROCESS AFTER OUTPUT.
+* MODULE STATUS_0100.
+  MODULE show_multiline.
+```
+
+
