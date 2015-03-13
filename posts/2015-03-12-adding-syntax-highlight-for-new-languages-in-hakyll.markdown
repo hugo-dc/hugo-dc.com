@@ -77,14 +77,6 @@ I executed:
 
 ```shell
 λ cabal install
-Resolving dependencies...
-In order, the following will be installed:
-highlighting-kate-0.5.9 (latest: 0.5.11.1) (reinstall) changes:
-blaze-html-0.7.0.3 -> 0.7.1.0, filepath-1.3.0.2 added, parsec-3.1.5 -> 3.1.8
-Warning: Note that reinstalls are always dangerous. Continuing anyway...
-Configuring highlighting-kate-0.5.11.1...
-Building highlighting-kate-0.5.11.1...
-Installed highlighting-kate-0.5.11.1
 ```
 
 This command will reinstall the library.
