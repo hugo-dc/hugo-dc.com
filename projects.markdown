@@ -10,6 +10,8 @@ Here is a list of my side-projects:
 FreqPy
 ======
 
+Git repository: [https://github.com/hugo-dc/freqpy](https://github.com/hugo-dc/freqpy)
+
 Generate Wallpapers with the most frequent Chinese characters.
 
 Execution:
