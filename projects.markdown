@@ -4,10 +4,25 @@ title: Projects
 
 Here is a list of my side-projects:
 
+* [wpm - A simple package manager for Windows]()
 * [Learn Chinese Characters (Javascript/AngularJS)](#learn-chinese-characters)
 * [FreqPy - Genearate Wallpapers (Python/Inkscape)](#freqpy) 
 
 ----------------------------------------------
+
+wpm - A simple package manager for Windows
+==========================================
+
+Github Repository: [https://github.com/hugo-dc/wpm](https://github.com/hugo-dc/wpm)
+
+Programming Language: Bash
+
+More Information: [wpm: A very simple "package manager" for Windows](/posts/2015-04-16-wpm-a-package-manager-for-windows.html)
+
+Screenshot:
+
+![](/images/wpm.jpg)
+
 
 Learn Chinese Characters
 ========================
