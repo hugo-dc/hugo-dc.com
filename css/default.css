@@ -147,17 +147,12 @@ table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode, table.sourceCode
        vertical-align: baseline;
        border: none;
    }
-/*td.lineNumbers {*/
-    /*border-right: 1px solid #AAAAAA;*/
-    /*text-align: right; color: #AAAAAA;*/
-    /*padding-right: 5px;*/
-    /*padding-left: 5px;*/
-/*}*/
 
+/* Molokai */
 td.sourceCode { padding-left: 5px; }
 .sourceCode span.co { color: #999999; font-style: italic; }
 .sourceCode span.kw { color: #F92672;  }
-.sourceCode span.dt { color: #902000; }
+.sourceCode span.dt { color: #A6E22E; }
 .sourceCode span.dv { color: #40a070; }
 .sourceCode span.bn { color: #40a070; }
 .sourceCode span.fl { color: #40a070; }
