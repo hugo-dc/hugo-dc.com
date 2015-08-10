@@ -91,7 +91,7 @@ allows to click in some point and hold it until you want to release it.
 
 -------------------------------------------------------------
 
-Keyboard Automation [win32com]
+Keyboard Automation (Windows) [win32com] 
 ==============================
 
 You can send keys as if it comes from a keyboard using win32com. Here is an
@@ -105,7 +105,7 @@ shell = client.Dispatch("WScript.Shell")
 shell.sendKeys(key)
 ```
 
-In [this site](http://ss64.com/vb/sendkeys.html) you can find how to send
+In [this site: http://ss64.com/vb/sendkeys.html](http://ss64.com/vb/sendkeys.html) you can find how to send
 special keys such as INSERT, ENTER, etc.
 
 -------------------------------------------------------------
@@ -113,7 +113,7 @@ special keys such as INSERT, ENTER, etc.
 Other resources
 ===============
 
-Check Current Window [win32gui] 
+Check Current Window (Windows) [win32gui] 
 --------------------------------
 
 Using the mouse automation you can operate GUI programs, in my case when
