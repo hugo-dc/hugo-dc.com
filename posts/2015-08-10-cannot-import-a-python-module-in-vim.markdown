@@ -2,7 +2,7 @@
 title: Error importing a Python module in Vim
 ---
 
-I wanted to test a Vim plugin I created a long time before, but I was receiving
+I wanted to test a Vim plugin I created a long time ago, but I was receiving
 an error:
 
 ![](/images/traceback.jpg)
