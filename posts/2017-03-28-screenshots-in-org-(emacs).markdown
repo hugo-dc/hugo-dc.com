@@ -17,120 +17,155 @@ And then `M-x org-redisplay-inline-images`, and it was great to look at the
 picture inside my Org file. But after doing this a few times I knew I could do it
 better.
 
-TODO
-
-I'm using the same Emacs configuration in my Windows box (Thanks to Dropbox), so
-I needed something like `gnome-screenshot` to take screenshot, but I didn't wanted to
-install anything there, then I decided to create a simple screenshot tool.
+Currently I'm using the same Emacs configuration in Windows and in GNU/Linux
+(Thanks to Dropbox). In Arch(linux) I could call `gnome-screenshot` to take
+screenshot, but I don't know something like it for Windows and I didn't wanted
+to install anything new or complicated, then I decided to create a simple
+screenshot tool.
 
 I found
 [a code example](https://www.codeproject.com/Articles/485883/Create-your-own-Snipping-Tool)
-that I could extend to make something similar to scrot. The
+that I could extend to make something similar to `gnome-screenshots`. The
 [LICENSE](https://www.codeproject.com/info/cpol10.aspx) allows me to do that.
 
 So I changed the program to behave like `gnome-screenshot`, the program name in windows is
-`org-shot`. This program receives the picture path as parameter.
+`org-shot`. This program receives the picture path as parameter. So you could
+call it from the Windows terminal as:
 
-Here is the Emacs Lisp Functions I created to take screenshots in Windows and
-GNU/Linux and show the pictures in Org Mode.
-
-* Get screenshot program, depending on the operating system we are using, returns the correct program
-name:
-
-```elisp
-(defun get-screenshot-program ()
-  (if (eq system-type 'windows-nt)
-      "c:/users/admin/Dropbox/Org/org-shot.exe"
-    "gnome-screenshot -a -f"))
+```
+org-shot images/test.png
 ```
 
-* Get base dir, indicates the path where the images will be stored.
+And that would allow you to select a screen region and the resulting picture
+will be saved as `test.png` in the `images` directory.
 
-```elisp
+You can download `org-shot` binary from the [GitLab repository](https://gitlab.com/hugo_dc/org-shot/tree/master/BNScreenshot/bin/Debug), but I highly recommend you recompile it yourself.
+
+So now I have the programs I need for selecting a screen region and storing the
+picture in a file, `gnome-screenshots` in Archlinux and `org-shot` in
+Windows. Then we just need the Emacs Lisp code to generate the image name,
+calculate the path and call the screenshot program and save the picture.
+
+Here is the Emacs Lisp code I wrote to make it work:
+
+* *get-sreenshot-program*: First, we need to know what screenshot program we need, depending on the
+operating system we are using, the function returns the correct program
+name:
+
+```lisp
+(defun get-screenshot-program ()
+  (if (eq system-type 'windows-nt)
+      "c:/users/admin/Dropbox/Org/org-shot.exe" ;; for Windows
+    "gnome-screenshot -a -f"))                  ;; for GNU/Linux
+```
+
+* *get-base-dir*: Get base dir, indicates the path where the image files will be
+  stored, in Windows I'm using the full path:
+
+```lisp
 (defun get-base-dir ()
   (if (eq system-type 'windows-nt)
       "C:/Users/ADMIN/Dropbox/Org/images/" ;; Windows
     "~/Dropbox/Org/images/"))              ;; GNU/Linux
 ```
 
-* Screencap.
+* *screencap*: This is our main function
 
-```elisp
+```lisp
 (defun screencap ()
   "Captures an image and generates image name (Works on Windows/Linux)"
   (interactive)
-  (let ((base-dir  (get-base-dir))
-	(image-dir (format-time-string "%Y%m"))
-	(image-name (format-time-string "%d%H%M%s")))
-    (progn
-      (when (eq (cdr (assoc 'fullscreen (frame-parameters))) 'maximized)
-    	(suspend-frame))
-      (when (not (file-exists-p (concat base-dir image-dir)))
-    	(make-directory (concat base-dir image-dir)))
-      (shell-command (concat (get-screenshot-program) " " base-dir image-dir "/" image-name ".png"))
-      (insert "[[")
+  (let ((base-dir  (get-base-dir))                                       ;; (1)
+    (image-dir (format-time-string "%Y%m"))                              ;; (2)
+    (image-name (format-time-string "%d%H%M%s")))                        ;; (3)
+(progn
+      (when (eq (cdr (assoc 'fullscreen (frame-parameters))) 'maximized) ;; (4)
+    	(suspend-frame))                                                 ;; (5)
+      (when (not (file-exists-p (concat base-dir image-dir)))            ;; (6)
+    	(make-directory (concat base-dir image-dir)))                    ;; (7)
+      (shell-command (concat (get-screenshot-program) " " base-dir image-dir "/" image-name ".png"));;(8)
+      (insert "[[")                                                          ;; (9)
       (insert (concat "~/Dropbox/Org/images/" image-dir "/" image-name ".png"))
       (insert "]]")
-      (org-redisplay-inline-images))))
+      (org-redisplay-inline-images))))  ;; (10)
 ```
 
-Here is the explanation:
+Here is how it works:
 
-Gets the base directory, depending on the operating system.
+(1) Gets the base directory, depending on the operating system and stores it in `base-dir`
 
-```elisp
+```lisp
   (let ((base-dir  (get-base-dir))
 ```
-Gets the image subdirectory, this is YYYYMM, for example 201704. I did this
-because I created a lot of files in the `images/` directory, so it's much better
+
+(2) Gets the image subdirectory, this is YYYYMM, for example 201705. I did this
+because I created a lot of files in the `images/` directory at first, so it's much better
 to group them by month.
 
-```elisp
+```lisp
 	(image-dir (format-time-string "%Y%m"))
 ```	
 
-Define the image name, the image name will be the day number + timestamp
+(3) Define the image name, the image name will be the day number + timestamp
 
-```elisp
+```lisp
 	(image-name (format-time-string "%d%H%M%s")))
 ```
 
-If Emacs is on top of all other application, this will minimize Emacs allowing
+(4,5) If Emacs is on top of all other application (maximized), this will minimize Emacs allowing
 you to take the screenshot.
 
-```elisp
+```lisp
       (when (eq (cdr (assoc 'fullscreen (frame-parameters))) 'maximized)
     	(suspend-frame))
 ```
 
 If Emacs does not covers all screen, then it will remains as it is and you can
-take a screenshot even at the Emacs window.
+take a screenshot even including the Emacs window.
 
-If the directory YYYYMM does not exists, emacs will create it:
+(6, 7) If the directory YYYYMM does not exists, emacs will create it:
 
-```elisp
+```lisp
       (when (not (file-exists-p (concat base-dir image-dir)))
     	(make-directory (concat base-dir image-dir)))
 ```
 
-After that we call a shell command to execute our screenshot program (`scrot` or
+(8) After that we call a shell command to execute our screenshot program (`gnome-screenshots` or
 `org-shot`):
 
-```elisp
+```lisp
       (shell-command (concat (get-screenshot-program) " " base-dir image-dir "/" image-name ".png"))
 ```
 
-When the screenshot is taken insert the image path using Org format.
+(9) When the screenshot is taken insert the image path using Org format.
 
-```elisp
+```lisp
       (insert "[[")
       (insert (concat "~/Dropbox/Org/images/" image-dir "/" image-name ".png"))
       (insert "]]")
 ```
 
-We call `org-redisplay-inline-images` at the end in order to show the previous
-code as an image/picture.
+This will add a string in the current Org buffer similar to this:
 
-I hope this post may help you to integrate screenshots to your Org files, or if
-you are still not using Emacs I hope you want to try it. In any case, if you
-have any comment or question please [let me know](http://twitter.com/hugo_dc).
+```
+[[~/Dropbox/Org/images/201705/10205533224455.png]]
+
+```
+
+And Org will represent it as a link (only showing the image path)
+
+(10) We call `org-redisplay-inline-images` at the end in order to show the previous
+code as an image/picture, not as a link.
+
+And that's it. Now we can see the picture in our Org buffer:
+
+![](/images/screenshot.png)
+
+It is very possible that you don't need all the code (maybe you just use
+GNU/Linux, or just Windows, or another OS), but I think you can use the code and
+adapt it to your needs, in any case, I hope this post may help you to integrate
+screenshots to your Org files, or if you are still not using Emacs I hope you
+want to try it. If you have any comment, question or ideas on how
+to improve the code, please [let me know](http://twitter.com/hugo_dc).
+
+
