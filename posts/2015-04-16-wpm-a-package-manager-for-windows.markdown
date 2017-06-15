@@ -1,5 +1,5 @@
 ---
-title: wpm: A very simple "package manager" for Windows
+title: wpm':' A very simple "package manager" for Windows
 ---
 
 About wpm
